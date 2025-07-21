@@ -6,7 +6,6 @@ an ollama embedding model (mxbai-embed-large). The vectors are then added to the
 json and saved for future retrieval by FAISS"""
 
 MODEL = "mxbai-embed-large:latest"
-URL = 'http://localhost:11434/api/embeddings'
 HEADERS = {
         "Content-Type": "application/json"
         }
@@ -17,7 +16,7 @@ def get_vector(text):
             'prompt': text
             }
 
-    response = requests.post(URL, json=payload)
+    response = requests.post(EMBEDDING_URL, json=payload)
     out = response.json()
     return out['embedding']
     
@@ -29,6 +28,7 @@ with open("config.json", "r") as j:
 
 CHUNK_PATH = config_data["chunkpath"]
 EMBEDDED_CHUNK_PATH = config_data["embedded-chunkpath"]
+EMBEDDING_URL = config_data["ollama-embedding-url"]
 
 chunk_list = []
 with open(CHUNK_PATH, "r") as chunks:

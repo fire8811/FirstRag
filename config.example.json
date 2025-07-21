@@ -1,4 +1,5 @@
 {
   "chunkpath":"PATH TO YOUR TEXT CHUNKS",
-  "embedded-chunkpath": "PATH TO WHERE VECTORS WILL BE STORED"
+  "embedded-chunkpath": "PATH TO WHERE VECTORS WILL BE STORED",
+  "ollama-embedding-url": "OLLAMA-BASE-URL/api/embeddings"
 }
