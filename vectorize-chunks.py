@@ -1,3 +1,50 @@
-import faiss
+import json
+import requests
 
-print(faiss.get_num_gpus())
+"""This gets the JSON chunk data, extracts the chunks and then runs it through
+an ollama embedding model (mxbai-embed-large). The vectors are then added to the 
+json and saved for future retrieval by FAISS"""
+
+MODEL = "mxbai-embed-large:latest"
+URL = 'http://localhost:11434/api/embeddings'
+HEADERS = {
+        "Content-Type": "application/json"
+        }
+
+def get_vector(text):
+    payload = {
+            'model': MODEL,
+            'prompt': text
+            }
+
+    response = requests.post(URL, json=payload)
+    out = response.json()
+    return out['embedding']
+    
+    
+
+with open("config.json", "r") as j:
+    config_data = json.load(j)
+    print("-- config read success")
+
+CHUNK_PATH = config_data["chunkpath"]
+EMBEDDED_CHUNK_PATH = config_data["embedded-chunkpath"]
+
+chunk_list = []
+with open(CHUNK_PATH, "r") as chunks:
+    chunk_list = json.load(chunks)
+    print("-- chunk json read success")
+
+chunks_with_vectors = []
+
+for chunk_data in chunk_list:
+    vector = get_vector(chunk_data["content"])
+    chunk_data['vector'] = vector
+    chunks_with_vectors.append(chunk_data)
+
+#save new chunk_data
+with open(EMBEDDED_CHUNK_PATH, "w") as j:
+    json.dump(chunks_with_vectors, j, ensure_ascii=False, indent=2)
+    print("-- vector json write success")
+
+print("\n ===== DONE =====")
