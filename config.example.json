@@ -1,0 +1,4 @@
+{
+  "chunkpath":"PATH TO YOUR TEXT CHUNKS",
+  "embedded-chunkpath": "PATH TO WHERE VECTORS WILL BE STORED"
+}
