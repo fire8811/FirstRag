@@ -21,7 +21,6 @@ def get_vector(text):
     return out['embedding']
     
     
-
 with open("config.json", "r") as j:
     config_data = json.load(j)
     print("-- config read success")
