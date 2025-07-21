@@ -37,14 +37,17 @@ with open(CHUNK_PATH, "r") as chunks:
 
 chunks_with_vectors = []
 
-for chunk_data in chunk_list:
+for index, chunk_data in enumerate(chunk_list):
+    print(f"-- getting embedding for chunk {index}...".ljust(50), end="\r", flush=True)
+
     vector = get_vector(chunk_data["content"])
     chunk_data['vector'] = vector
+        
     chunks_with_vectors.append(chunk_data)
 
 #save new chunk_data
 with open(EMBEDDED_CHUNK_PATH, "w") as j:
     json.dump(chunks_with_vectors, j, ensure_ascii=False, indent=2)
-    print("-- vector json write success")
+    print("\n-- vector json write success")
 
-print("\n ===== DONE =====")
+print("\n ===== DONE ===== ")
