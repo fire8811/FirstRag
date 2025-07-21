@@ -3,3 +3,6 @@ chunks/
 .venv/
 
 falta.txt
+faisstest.py
+config.json
+
