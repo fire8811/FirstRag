@@ -1,6 +1,7 @@
 documents/
 chunks/
 .venv/
+testfiles/
 
 falta.txt
 faisstest.py
