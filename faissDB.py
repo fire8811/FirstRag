@@ -5,7 +5,7 @@ import sys
 
 """class for storing and handling FAISS database"""
 
-class FaissDB(self):
+class FaissDB:
     def __init__(self):
         db = self.__initDB()
 
