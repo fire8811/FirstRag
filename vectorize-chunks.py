@@ -25,6 +25,7 @@ def get_vector(text):
 with open("config.json", "r") as j:
     config_data = json.load(j)
     print("-- config read success")
+    print(config_data)
 
 CHUNK_PATH = config_data["chunkpath"]
 EMBEDDED_CHUNK_PATH = config_data["embedded-chunkpath"]
@@ -42,7 +43,8 @@ for index, chunk_data in enumerate(chunk_list):
 
     vector = get_vector(chunk_data["content"])
     chunk_data['vector'] = vector
-        
+    chunk_data['index'] = index
+
     chunks_with_vectors.append(chunk_data)
 
 #save new chunk_data
