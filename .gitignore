@@ -2,6 +2,7 @@ documents/
 chunks/
 .venv/
 testfiles/
+__pycache__/ 
 
 falta.txt
 config.json
