@@ -7,7 +7,7 @@ import sys
 
 class FaissDB:
     def __init__(self):
-        db = self.__initDB()
+        self.db = self.__initDB()
 
     def __initDB(self):
         vectors = self.__getVectors()
@@ -32,7 +32,7 @@ class FaissDB:
             embeddings_path = config_data["embedded-chunkpath"]
          
         with open(embeddings_path, 'r') as e:
-            chunk_data = json.load(c)
+            chunk_data = json.load(e)
 
         vector_list = []
         for chunk in chunk_data:
