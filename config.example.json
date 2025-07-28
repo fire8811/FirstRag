@@ -2,5 +2,8 @@
   "chunkpath":"PATH TO YOUR TEXT CHUNKS",
   "embedded-chunkpath": "PATH TO WHERE VECTORS WILL BE STORED",
   "ollama-embedding-url": "OLLAMA-BASE-URL/api/embeddings",
-  "ollama-embedding-model": "YOUR EMBEDDING MODEL OF CHOICE"
+  "ollama-embedding-model": "YOUR EMBEDDING MODEL OF CHOICE",
+  "llm-url": "OLLAMA-BASE-URL/api/generate",
+  "llm-model": "YOUR MODEL OF CHOICE"
 }
+
