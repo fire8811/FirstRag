@@ -5,30 +5,28 @@ import requests
 an ollama embedding model (mxbai-embed-large). The vectors are then added to the 
 json and saved for future retrieval by FAISS"""
 
-MODEL = "mxbai-embed-large:latest"
 HEADERS = {
         "Content-Type": "application/json"
         }
 
-def get_vector(text):
+def get_vector(text, url, model):
     payload = {
-            'model': MODEL,
+            'model': model,
             'prompt': text
             }
 
-    response = requests.post(EMBEDDING_URL, json=payload)
+    response = requests.post(url, json=payload)
     out = response.json()
     return out['embedding']
     
     
 with open("config.json", "r") as j:
     config_data = json.load(j)
+    CHUNK_PATH = config_data["chunkpath"]
+    EMBEDDED_CHUNK_PATH = config_data["embedded-chunkpath"]
+    EMBEDDING_URL = config_data["ollama-embedding-url"]
+    EMBEDDING_MODEL = config_data["ollama-embedding-model"]
     print("-- config read success")
-    print(config_data)
-
-CHUNK_PATH = config_data["chunkpath"]
-EMBEDDED_CHUNK_PATH = config_data["embedded-chunkpath"]
-EMBEDDING_URL = config_data["ollama-embedding-url"]
 
 chunk_list = []
 with open(CHUNK_PATH, "r") as chunks:
@@ -36,11 +34,10 @@ with open(CHUNK_PATH, "r") as chunks:
     print("-- chunk json read success")
 
 chunks_with_vectors = []
-
 for index, chunk_data in enumerate(chunk_list):
     print(f"-- getting embedding for chunk {index}...".ljust(50), end="\r", flush=True)
 
-    vector = get_vector(chunk_data["content"])
+    vector = get_vector(chunk_data["content"], EMBEDDING_URL, EMBEDDING_MODEL)
     chunk_data['vector'] = vector
     chunk_data['index'] = index
 
