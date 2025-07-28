@@ -1,6 +1,8 @@
 import sys
 from faissDB import FaissDB
+from queryHandler import QueryHandler
 import json
+from llmHandler import LlmHandler
 
 """ RAG is mostly run here in this driver script """
 
@@ -13,18 +15,31 @@ def getConfigInfo():
         embedding_model = config_data["ollama-embedding-model"]
         llm_url = config_data["llm-url"]
         llm_model = config_data["llm-model"]
+        chunkpath = config_data["chunkpath"]
 
-        return embedding_url, embedding_model, llm_url, llm_model
+        return embedding_url, embedding_model, llm_url, llm_model, chunkpath
 
 def main():
-    embedding_url, embedding_model, llm_url, llm_model = getConfigInfo()
+    embedding_url, embedding_model, llm_url, llm_model, chunkpath = getConfigInfo()
+    NUM_VECTORS = 5
     database = FaissDB()
-    
+    query_handler = QueryHandler(embedding_url, embedding_model, llm_url, llm_model)
+    llm_handler = LlmHandler(llm_url, llm_model, chunkpath)
     query = ""
 
     while query.lower() != "!q":
         query = input("Enter your query (!q to quit): ")
-        print(query)
+        
+        if query.lower() == "!q":
+            break
+
+        q_vector = query_handler.get_query_vector(query)
+        text_vectors_indexes = database.find_chunks(q_vector, NUM_VECTORS)
+
+        llm_handler.sendRAGquery(query, text_vectors_indexes)
+        #print(q_vector)
+        #print(text_vectors_indexes) #TODO: find a place to store chunks. Maybe in FaissDB tbh. 
+
 
 
 if __name__ == "__main__":

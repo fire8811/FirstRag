@@ -44,5 +44,5 @@ class FaissDB:
         """return k most simliar vectors of q_vector from the database"""
         q_vector_reshaped = np.array(q_vector, dtype=np.float32).reshape(1, -1)
         distance, indices = self.db.search(q_vector_reshaped, k=k)
-
+    
         return indices
